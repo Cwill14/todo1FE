@@ -1,11 +1,15 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+import Welcome from './components/Welcome/Welcome';
+import Main from './components/Main/Main';
 
 function App() {
   return (
-    <div className="App">
-      <h1>To Do</h1>
-    </div>
+    <Router>
+      <Route exact path="/" component={Welcome} />
+      <Route path="/main" component={Main} />
+    </Router>
   );
 }
 
