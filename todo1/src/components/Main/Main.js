@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import Task from './Task.js';
 
@@ -24,19 +25,46 @@ const Main = () => {
             .get('http://localhost:8000/main')
             .then(res => {
                 console.log("res: ", res)
-                // setList(res.data)
+                setList(res.data)
             })
             .catch(err => {
                 console.log("err: ", err)
             })
     }, [])
 
+    const toggleComplete = e => {
+        e.preventDefault();
+        // setSampleList([
+        //     ...sampleList,
+        //     {
+
+        //     }
+
+        // ])
+    }
+
+    const addTask = task => {
+
+    }
+
+    const deleteTask = taskID => {
+
+    }
+
     return (
         <div>
             <h1>To Do:</h1>
             {
-                sampleList.map(obj => {
-                    <Task task={obj.task} completed={obj.completed} />
+                list.map(obj => {
+                    return <Task key={obj.id} task={obj} toggleComplete={toggleComplete}/>
+                    // <div classname="task-box">
+                    //     <input
+                    //         type="checkbox"
+                    //         value={obj.completed}
+                    //         name="completed"
+                    //     />
+                    //     <p>{obj.task}</p>
+                    // </div>
                 })
             }
         </div>
