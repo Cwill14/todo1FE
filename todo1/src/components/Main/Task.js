@@ -1,33 +1,17 @@
 import React, { useState } from 'react';
 
+import './task.css';
+
 const Task = props => {
-    
-    // const [state, setState] = useState({
-    //     id: props.task.id,
-    //     task: props.task.task,
-    //     completed: props.task.completed
-    // })
 
-    // const handleChanges = e => {
-    //     e.preventDefault();
-    //     setState({
-    //         ...state,
-    //         [e.target.name]: e.target.value
-    //     })
-    // }
+    let showUpdate = false;
 
+    const setDelete = () => {
+        console.log("props.id = ", props.id)
+        props.setTargetId(props.id)
+        props.deleteTask()
+    }
 
-    // return (
-    //     <div classname="task-box">
-    //         <input
-    //             type="checkbox"
-    //             value={state.completed}
-    //             name="completed"
-    //             onChange={handleChanges}
-    //         />
-    //         <p>{state.task}</p>
-    //     </div>
-    // );
     return (
         <div className="task-box">
             <input
@@ -37,6 +21,17 @@ const Task = props => {
                 onChange={props.toggleComplete}
             />
             <p>{props.task.task}</p>
+            <button onClick={() => showUpdate = !showUpdate}>Update Task</button>
+            {
+                showUpdate &&
+                    <form>
+                        <input
+                            type="text"
+                        />
+                    </form>
+                    
+            }
+            <button onClick={setDelete}>Delete Task(dbl click for now)</button>
         </div>
     );
 };

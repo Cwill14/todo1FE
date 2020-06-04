@@ -1,0 +1,9 @@
+.task-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* justify-content: center; */
+}
+.task-box button{
+    margin-left: 40px
+}

@@ -2,53 +2,77 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import Task from './Task.js';
+import AddForm from './AddForm.js';
 
 const Main = () => {
     
+    const baseURL = 'http://localhost:8000'
+
     const [list, setList] = useState([])
-    
-    const [sampleList, setSampleList] = useState([
-        {
-            id: 1,
-            task: "Wash the car",
-            completed: false
-        },
-        {
-            id: 2,
-            task: "Mow the lawn",
-            completed: false
-        }
-    ])
+    const [taskInput, setTaskInput] = useState("");
+    const [targetId, setTargetId] = useState(0)
 
     useEffect(() => {
-        axios
-            .get('http://localhost:8000/main')
-            .then(res => {
-                console.log("res: ", res)
-                setList(res.data)
-            })
-            .catch(err => {
-                console.log("err: ", err)
-            })
+        getList()
     }, [])
 
     const toggleComplete = e => {
         e.preventDefault();
-        // setSampleList([
-        //     ...sampleList,
-        //     {
-
-        //     }
-
-        // ])
     }
 
-    const addTask = task => {
-
+    const getList = () => {
+        
+        axios
+        .get(`${baseURL}/main`)
+        .then(res => {
+            console.log("get res: ", res)
+            setList(res.data)
+        })
+        .catch(err => {
+            console.log("get err: ", err)
+        })
     }
 
-    const deleteTask = taskID => {
+    const addTask = e => {
+    // const addTask = (e, task) => {
+        // e.preventDefault();
+        const newTask = {
+            task: taskInput
+        }
+        axios
+            .post(`${baseURL}/main`, newTask)
+            // .post(`${baseURL}/main`, taskInput)
+            .then(res => {
+                console.log("add res = ", res)
+            })
+            .catch(err => {
+                console.log("add err = ", err);
+            })
+    }
 
+    const deleteTask = e => {
+        console.log("targetId =", targetId)
+        axios
+            .delete(`${baseURL}/main/${targetId}`)
+            .then(res => {
+                console.log("delete res = ", res)
+            })
+            .catch(err => {
+                console.log("delete err = ", err)
+            })
+    }
+    
+    
+    const updateTask = e => {
+        
+    }
+    
+    const handleInput = e => {
+        e.preventDefault()
+        // setTaskInput(
+        //     {[e.target.name]: e.target.value}
+        // )
+        setTaskInput(e.target.value)
     }
 
     return (
@@ -56,7 +80,15 @@ const Main = () => {
             <h1>To Do:</h1>
             {
                 list.map(obj => {
-                    return <Task key={obj.id} task={obj} toggleComplete={toggleComplete}/>
+                    return <Task
+                        key={obj.id}
+                        id={obj.id}
+                        task={obj}
+                        toggleComplete={toggleComplete}
+                        deleteTask={deleteTask}
+                        updateTask={updateTask}
+                        setTargetId={setTargetId}
+                    />
                     // <div classname="task-box">
                     //     <input
                     //         type="checkbox"
@@ -67,6 +99,11 @@ const Main = () => {
                     // </div>
                 })
             }
+            <AddForm
+                addTask={addTask}
+                taskInput={taskInput}
+                handleInput={handleInput}
+            />
         </div>
     );
 };
