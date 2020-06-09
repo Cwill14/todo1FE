@@ -8,41 +8,35 @@ const Task = props => {
     // let showUpdate = false;
     const [showUpdate, setShowUpdate] = useState(false)
 
-    // const setDelete = () => {
-    //     // console.log("props.id = ", props.id)
-    //     // console.log("props.targetId before set = ", props.targetId)
-    //     // props.setTargetId(props.id)
-    //     // console.log("props.targetId after set = ", props.targetId)
-    //     // props.deleteTask()
-
-    // }
-    // console.log("showUpdate = ", showUpdate)
-
+    console.log("showUpdate = ", showUpdate)
+    
     return (
         <div className="task-box">
             {
                 showUpdate
-                    ? <>
+                    ?
                         <UpdateForm
                             task={props.task.task}
                             taskID={props.id}
                             updateTask={props.updateTask}
                             setShowUpdate={setShowUpdate}
                             showUpdate={showUpdate}
-
                         />
-                        {/* <button onClick={() => {
-                            setShowUpdate(!showUpdate)
-                            console.log("showUpdate inside= ", showUpdate)
-                        }}>Update Task</button> */}
-                    </>
-                    : <p>{props.task.task}</p>
+
+                    : 
+                        <>
+                            <p>{props.task.task}</p>
+                            <button onClick={() => {
+                                setShowUpdate(!showUpdate)
+                                console.log("showUpdate inside= ", showUpdate)
+                            }}>Update Task</button>
+                        </>
             }
 
-            <button onClick={() => {
+            {/* <button onClick={() => {
                 setShowUpdate(!showUpdate)
                 // console.log("showUpdate inside= ", showUpdate)
-            }}>Update Task</button>
+            }}>Update Task</button> */}
             <button onClick={() => props.deleteTask(props.id)}>Delete Task</button>
         </div>
     );
