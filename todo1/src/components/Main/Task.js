@@ -1,37 +1,49 @@
 import React, { useState } from 'react';
 
 import './task.css';
+import UpdateForm from './UpdateForm.js';
 
 const Task = props => {
 
-    let showUpdate = false;
+    // let showUpdate = false;
+    const [showUpdate, setShowUpdate] = useState(false)
 
-    const setDelete = () => {
-        console.log("props.id = ", props.id)
-        props.setTargetId(props.id)
-        props.deleteTask()
-    }
+    // const setDelete = () => {
+    //     // console.log("props.id = ", props.id)
+    //     // console.log("props.targetId before set = ", props.targetId)
+    //     // props.setTargetId(props.id)
+    //     // console.log("props.targetId after set = ", props.targetId)
+    //     // props.deleteTask()
+
+    // }
+    // console.log("showUpdate = ", showUpdate)
 
     return (
         <div className="task-box">
-            <input
-                type="checkbox"
-                value={props.task.completed}
-                name="completed"
-                onChange={props.toggleComplete}
-            />
-            <p>{props.task.task}</p>
-            <button onClick={() => showUpdate = !showUpdate}>Update Task</button>
             {
-                showUpdate &&
-                    <form>
-                        <input
-                            type="text"
+                showUpdate
+                    ? <>
+                        <UpdateForm
+                            task={props.task.task}
+                            taskID={props.id}
+                            updateTask={props.updateTask}
+                            setShowUpdate={setShowUpdate}
+                            showUpdate={showUpdate}
+
                         />
-                    </form>
-                    
+                        {/* <button onClick={() => {
+                            setShowUpdate(!showUpdate)
+                            console.log("showUpdate inside= ", showUpdate)
+                        }}>Update Task</button> */}
+                    </>
+                    : <p>{props.task.task}</p>
             }
-            <button onClick={setDelete}>Delete Task(dbl click for now)</button>
+
+            <button onClick={() => {
+                setShowUpdate(!showUpdate)
+                // console.log("showUpdate inside= ", showUpdate)
+            }}>Update Task</button>
+            <button onClick={() => props.deleteTask(props.id)}>Delete Task</button>
         </div>
     );
 };

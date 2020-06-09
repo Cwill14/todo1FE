@@ -10,7 +10,7 @@ const Main = () => {
 
     const [list, setList] = useState([])
     const [taskInput, setTaskInput] = useState("");
-    const [targetId, setTargetId] = useState(0)
+    // const [targetId, setTargetId] = useState(0)
 
     useEffect(() => {
         getList()
@@ -21,7 +21,6 @@ const Main = () => {
     }
 
     const getList = () => {
-        
         axios
         .get(`${baseURL}/main`)
         .then(res => {
@@ -34,14 +33,11 @@ const Main = () => {
     }
 
     const addTask = e => {
-    // const addTask = (e, task) => {
-        // e.preventDefault();
         const newTask = {
             task: taskInput
         }
         axios
             .post(`${baseURL}/main`, newTask)
-            // .post(`${baseURL}/main`, taskInput)
             .then(res => {
                 console.log("add res = ", res)
             })
@@ -50,21 +46,23 @@ const Main = () => {
             })
     }
 
-    const deleteTask = e => {
-        console.log("targetId =", targetId)
+    const deleteTask = id => {
         axios
-            .delete(`${baseURL}/main/${targetId}`)
+            .delete(`${baseURL}/main/${id}`)
             .then(res => {
                 console.log("delete res = ", res)
+                getList()
+
             })
             .catch(err => {
                 console.log("delete err = ", err)
             })
     }
     
-    
-    const updateTask = e => {
-        
+    const updateTask = (id, changes) => {
+        axios.put(`${baseURL}/main/${id}`, changes)
+            .then(res => console.log("update res = ", res))
+            .catch(err => console.log("update err = ", err))
     }
     
     const handleInput = e => {
@@ -87,7 +85,8 @@ const Main = () => {
                         toggleComplete={toggleComplete}
                         deleteTask={deleteTask}
                         updateTask={updateTask}
-                        setTargetId={setTargetId}
+                        // setTargetId={setTargetId}
+                        // targetId={targetId}
                     />
                     // <div classname="task-box">
                     //     <input
