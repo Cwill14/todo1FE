@@ -72,6 +72,7 @@ const LoginSignup = props => {
                             name="username"
                             value={formInfo.username}
                             onChange={handleChanges}
+                            autoComplete="off"
                         />
                         <input
                             type="password"
@@ -79,6 +80,7 @@ const LoginSignup = props => {
                             name="password"
                             value={formInfo.password}
                             onChange={handleChanges}
+                            autoComplete="off"
                         />
                         {
                             formState === "login"

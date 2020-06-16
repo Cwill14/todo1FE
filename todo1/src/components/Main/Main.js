@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
+import { axiosWithAuth } from '../../axiosWithAuth';
+import { parseToken } from '../../parseToken';
 import Task from './Task.js';
 import AddForm from './AddForm.js';
 
@@ -10,9 +11,10 @@ const Main = () => {
 
     const [list, setList] = useState([])
     const [taskInput, setTaskInput] = useState("");
-    // const [targetId, setTargetId] = useState(0)
+    const [userId, setUserId] = useState(parseToken(localStorage.getItem("token")).subject)
 
     useEffect(() => {
+        console.log("userId = ", userId)
         getList()
     }, [])
 
@@ -21,8 +23,8 @@ const Main = () => {
     }
 
     const getList = () => {
-        axios
-        .get(`${baseURL}/main`)
+        axiosWithAuth()
+        .get(`${baseURL}/main/${userId}`)
         .then(res => {
             console.log("get res: ", res)
             setList(res.data)
@@ -33,10 +35,13 @@ const Main = () => {
     }
 
     const addTask = e => {
+        // e.preventDefault();
         const newTask = {
-            task: taskInput
+            task: taskInput,
+            uId: userId
         }
-        axios
+        axiosWithAuth()
+            // .post(`${baseURL}/main/${userId}`, newTask)
             .post(`${baseURL}/main`, newTask)
             .then(res => {
                 console.log("add res = ", res)
@@ -47,8 +52,8 @@ const Main = () => {
     }
 
     const deleteTask = id => {
-        axios
-            .delete(`${baseURL}/main/${id}`)
+        axiosWithAuth()
+            .delete(`${baseURL}/main/${userId}/${id}`)
             .then(res => {
                 console.log("delete res = ", res)
                 getList()
@@ -60,7 +65,7 @@ const Main = () => {
     }
     
     const updateTask = (id, changes) => {
-        axios.put(`${baseURL}/main/${id}`, changes)
+        axiosWithAuth().put(`${baseURL}/main/${userId}/${id}`, changes)
             .then(res => console.log("update res = ", res))
             .catch(err => console.log("update err = ", err))
     }
@@ -98,6 +103,7 @@ const Main = () => {
                     // </div>
                 })
             }
+            <p>--------------------------------</p>
             <AddForm
                 addTask={addTask}
                 taskInput={taskInput}

@@ -25,7 +25,7 @@ const Task = props => {
                             <p>{props.task.task}</p>
                             <button onClick={() => {
                                 setShowUpdate(!showUpdate)
-                                console.log("showUpdate inside= ", showUpdate)
+                                // console.log("showUpdate inside= ", showUpdate)
                             }}>Update Task</button>
                         </>
             }
