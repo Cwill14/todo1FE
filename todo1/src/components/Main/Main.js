@@ -5,13 +5,14 @@ import { parseToken } from '../../parseToken';
 import Task from './Task.js';
 import AddForm from './AddForm.js';
 
-const Main = () => {
+const Main = props => {
     
     const baseURL = 'http://localhost:8000'
 
     const [list, setList] = useState([])
     const [taskInput, setTaskInput] = useState("");
     const [userId, setUserId] = useState(parseToken(localStorage.getItem("token")).subject)
+    const [username, setUsername] = useState(parseToken(localStorage.getItem("token")).username)
 
     useEffect(() => {
         console.log("userId = ", userId)
@@ -72,14 +73,21 @@ const Main = () => {
     
     const handleInput = e => {
         e.preventDefault()
-        // setTaskInput(
-        //     {[e.target.name]: e.target.value}
-        // )
         setTaskInput(e.target.value)
+    }
+
+    const logout = () => {
+        setUserId(0)
+        setUsername("")
+        // console.log(parseToken(localStorage.getItem("token")))
+        localStorage.removeItem("token")
+        props.history.push("/")
     }
 
     return (
         <div>
+            <p>{username}</p>
+            <button onClick={logout}>logout</button>
             <h1>To Do:</h1>
             {
                 list.map(obj => {
